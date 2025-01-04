@@ -1,0 +1,19 @@
+[0;1;32m●[0m docker.service - Docker Application Container Engine
+   Loaded: loaded (/lib/systemd/system/docker.service; enabled; vendor preset: enabled)
+   Active: [0;1;32mactive (running)[0m since Sat 2025-01-04 14:14:02 UTC; 54min ago
+     Docs: https://docs.docker.com
+ Main PID: 1644 (dockerd)
+    Tasks: 9
+   CGroup: /system.slice/docker.service
+           └─1644 /usr/bin/dockerd -H fd:// --containerd=/run/containerd/containerd.sock
+
+Jan 04 14:13:55 yu-chen dockerd[1644]: time="2025-01-04T14:13:55.994203588Z" level=info msg="detected 127.0.0.53 nameserver, assuming systemd-resolved, so using resolv.conf: /run/systemd/resolve/resolv.conf"
+Jan 04 14:13:58 yu-chen dockerd[1644]: time="2025-01-04T14:13:58.437355775Z" level=info msg="[graphdriver] using prior storage driver: overlay2"
+Jan 04 14:13:58 yu-chen dockerd[1644]: time="2025-01-04T14:13:58.603178182Z" level=info msg="Loading containers: start."
+Jan 04 14:14:00 yu-chen dockerd[1644]: time="2025-01-04T14:14:00.876023032Z" level=info msg="Default bridge (docker0) is assigned with an IP address 172.17.0.0/16. Daemon option --bip can be used to set a preferred IP address"
+Jan 04 14:14:01 yu-chen dockerd[1644]: time="2025-01-04T14:14:01.012222640Z" level=info msg="Loading containers: done."
+Jan 04 14:14:01 yu-chen dockerd[1644]: time="2025-01-04T14:14:01.840261945Z" level=warning msg="WARNING: No swap limit support"
+Jan 04 14:14:01 yu-chen dockerd[1644]: time="2025-01-04T14:14:01.840681853Z" level=info msg="Docker daemon" commit=659604f graphdriver=overlay2 version=24.0.2
+Jan 04 14:14:01 yu-chen dockerd[1644]: time="2025-01-04T14:14:01.852101819Z" level=info msg="Daemon has completed initialization"
+Jan 04 14:14:02 yu-chen systemd[1]: Started Docker Application Container Engine.
+Jan 04 14:14:02 yu-chen dockerd[1644]: time="2025-01-04T14:14:02.147539909Z" level=info msg="API listen on /run/docker.sock"
