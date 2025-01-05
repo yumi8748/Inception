@@ -5,7 +5,7 @@ services:
     build: requirements/nginx/.
     container_name: nginx
     ports:
-      - "80:80"
+      - "443:443"
     volumes:
       - ./web:/var/www/html
   wordpress:
@@ -13,3 +13,12 @@ services:
     container_name: wp-php
     volumes:
       - ./web:/var/www/html
+  mariadb:
+    build: requirements/mariadb/.
+    container_name: mariadb
+    volumes:
+      - ./database:/var/lib/mysql
+    networks:
+      inception:
+networks:
+  inception:

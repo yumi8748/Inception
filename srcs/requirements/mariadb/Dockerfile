@@ -1,9 +1,11 @@
-FROM alpine:3.18
+FROM debian:latest
 
-RUN apk add --no-cache mariadb mariadb-client \
-    && mkdir -p /run/mysqld \
-    && chown -R mysql:mysql /run/mysqld /var/lib/mysql
+RUN apt update && apt upgrade && apt install -y mariadb-server
+RUN echo 'root:vagrant' | chpasswd
 
-COPY conf/my.cnf /etc/my.cnf.d/
+COPY 50-server.cnf /etc/mysql/mariadb.conf.d/.
+COPY init.sql /etc/mysql/init.sql
+
+RUN mkdir /run/mysqld
 
 CMD ["mysqld"]
