@@ -7,18 +7,37 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./web:/var/www/html
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    env_file:
+      - .env
+    restart: always
+
   wordpress:
     build: requirements/wordpress/.
     container_name: wp-php
+    depends_on:
+      - mariadb
     volumes:
-      - ./web:/var/www/html
+      - wordpress:/var/www/html
+    networks:
+      - inception
+    env_file:
+      - .env
+    restart: always
+
   mariadb:
     build: requirements/mariadb/.
     container_name: mariadb
     volumes:
-      - ./database:/var/lib/mysql
+      - mariadb:/var/lib/mysql
     networks:
-      inception:
+      -inception
+    env_file:
+      - .env
+    restart: always
+
 networks:
   inception:
+    name: inception

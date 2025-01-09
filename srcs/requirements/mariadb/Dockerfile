@@ -1,4 +1,4 @@
-FROM debian:latest
+FROM debian:buster
 
 RUN apt update && apt upgrade && apt install -y mariadb-server
 RUN echo 'root:vagrant' | chpasswd
