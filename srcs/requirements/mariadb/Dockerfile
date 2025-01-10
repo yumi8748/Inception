@@ -1,10 +1,12 @@
 FROM debian:buster
 
 RUN apt update && apt upgrade && apt install -y mariadb-server
+
 RUN echo 'root:vagrant' | chpasswd
 
-COPY 50-server.cnf /etc/mysql/mariadb.conf.d/.
-COPY init.sql /etc/mysql/init.sql
+COPY ./tools/50-server.cnf /etc/mysql/mariadb.conf.d/.
+
+COPY ./tools/script.sh /
 
 RUN mkdir /run/mysqld
 
