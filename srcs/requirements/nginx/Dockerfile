@@ -1,20 +1,27 @@
 FROM debian:buster
 
-RUN apt update && apt upgrade && apt install -y nginx
+# Set environment variable to avoid interactive prompts during package installs
+ENV DEBIAN_FRONTEND=noninteractive
 
-RUN apt install -y openssl
+# Install necessary packages
+RUN apt-get update && apt-get install -y \
+    apt-utils \
+    nginx \
+    openssl \
+    #perl-modules \
+    && apt-get clean
 
-RUN mkdir -p /etc/nginx/ssl
-
-RUN chmod 777 /etc/nginx/ssl
+# Create SSL directory and set permissions
+RUN mkdir -p /etc/nginx/ssl && \
+    chmod 700 /etc/nginx/ssl
 
 RUN openssl req -x509 -nodes \
  -keyout /etc/ssl/private/nginx-selfsigned.key \
- -out $CERTS_ \
+ -out /etc/nginx/ssl/nginx-selfsigned.crt \
  -subj "/C=FR/ST=Paris/L=Paris/O=42/OU=42/CN=yu-chen.42.fr\UID=yu-chen"
 
-COPY default /etc/nginx/sites-available/.
+# Copy configuration files
+COPY conf/nginx.conf /etc/nginx/conf.d
 
-COPY ./conf/nginx.conf /etc/nginx/.
-
+# Ensure nginx is run in the foreground
 CMD [ "nginx", "-g", "daemon off;" ]
