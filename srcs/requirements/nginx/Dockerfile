@@ -12,10 +12,10 @@ RUN apt-get update && apt-get install -y \
 
 # Create SSL directory and set permissions
 RUN mkdir -p /etc/nginx/ssl && \
-    chmod 700 /etc/nginx/ssl
+    chmod 777 /etc/nginx/ssl
 
 RUN openssl req -x509 -nodes \
- -keyout /etc/ssl/private/nginx-selfsigned.key \
+ -keyout /etc/nginx/ssl/nginx-selfsigned.key \
  -out /etc/nginx/ssl/nginx-selfsigned.crt \
  -subj "/C=FR/ST=Paris/L=Paris/O=42/OU=42/CN=yu-chen.42.fr\UID=yu-chen"
 

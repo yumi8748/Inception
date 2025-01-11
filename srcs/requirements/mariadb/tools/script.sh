@@ -1,23 +1,41 @@
 #!/bin/bash
 
-#service mysql start 
+# Check if MySQL data directory is already initialized
+if [ ! -d /var/lib/mysql/mysql ]; then
+    echo "=> Initializing database directory..."
+    mysqld --initialize-insecure --user=mysql --datadir=/var/lib/mysql
+fi
 
-mysqld_safe &
+# Start MySQL service
+echo "=> Starting MariaDB service..."
+mysqld_safe --datadir=/var/lib/mysql &
 
+# Wait for MySQL to start
+echo "=> Waiting for MariaDB to start..."
 while ! mysqladmin ping --silent; do
     sleep 1
 done
 
-echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';" | mysql
+# Set root password for MariaDB (ensure it's consistent)
+#echo "=> Setting root password..."
+#mysql -u root --execute="SET PASSWORD FOR 'root'@'localhost' = PASSWORD('$DB1_PWD');"
 
-echo "CREATE DATABASE IF NOT EXISTS $DB1_NAME ;" > db1.sql
-echo "CREATE USER IF NOT EXISTS '$DB1_USER'@'%' IDENTIFIED BY '$DB1_PWD' ;" >> db1.sql
-echo "GRANT ALL PRIVILEGES ON $DB1_NAME.* TO '$DB1_USER'@'%' ;" >> db1.sql
-#echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'password' ;" >> db1.sql
-echo "FLUSH PRIVILEGES;" >> db1.sql
+# Configure database and user
+echo "=> Setting up database and user..."
+cat <<EOF > /tmp/init.sql
+CREATE DATABASE IF NOT EXISTS $DB1_NAME;
+CREATE USER IF NOT EXISTS '$DB1_USER'@'%' IDENTIFIED BY '$DB1_PWD';
+GRANT ALL PRIVILEGES ON $DB1_NAME.* TO '$DB1_USER'@'%';
+ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB1_PWD';
+FLUSH PRIVILEGES;
+EOF
 
-mysql < db1.sql
+# Execute the initialization SQL script(using root password)
+echo "=> Executing SQL script..."
+mysql -u root -p$DB1_PWD < /tmp/init.sql
+rm /tmp/init.sql
 
-#kill $(cat /var/run/mysqld/mysqld.pid)
+echo "=> MariaDB initialization completed!"
 
-exec mysqld
+# Keep the container running in the foreground
+wait
