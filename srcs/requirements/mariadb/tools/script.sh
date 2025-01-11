@@ -1,16 +1,23 @@
 #!/bin/bash
 
-service mysql start 
+#service mysql start 
 
+mysqld_safe &
 
-echo "CREATE DATABASE IF NOT EXISTS $db1_name ;" > db1.sql
-echo "CREATE USER IF NOT EXISTS '$db1_user'@'%' IDENTIFIED BY '$db1_pwd' ;" >> db1.sql
-echo "GRANT ALL PRIVILEGES ON $db1_name.* TO '$db1_user'@'%' ;" >> db1.sql
-echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '12345' ;" >> db1.sql
+while ! mysqladmin ping --silent; do
+    sleep 1
+done
+
+echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';" | mysql
+
+echo "CREATE DATABASE IF NOT EXISTS $DB1_NAME ;" > db1.sql
+echo "CREATE USER IF NOT EXISTS '$DB1_USER'@'%' IDENTIFIED BY '$DB1_PWD' ;" >> db1.sql
+echo "GRANT ALL PRIVILEGES ON $DB1_NAME.* TO '$DB1_USER'@'%' ;" >> db1.sql
+#echo "ALTER USER 'root'@'localhost' IDENTIFIED BY 'password' ;" >> db1.sql
 echo "FLUSH PRIVILEGES;" >> db1.sql
 
 mysql < db1.sql
 
-kill $(cat /var/run/mysqld/mysqld.pid)
+#kill $(cat /var/run/mysqld/mysqld.pid)
 
-mysqld
+exec mysqld
