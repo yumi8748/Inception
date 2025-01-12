@@ -10,7 +10,7 @@ all: run
 run: 
 	@echo "$(GREEN)Building files for volumes ... $(RESET)"
 	@sudo mkdir -p /home/yu-chen/data/wordpress
-	@sudo mkdir -p /home/yu-chen/data/mariabd
+	@sudo mkdir -p /home/yu-chen/data/mariadb
 	@echo "$(GREEN)Building containers ... $(RESET)"
 	@docker compose -f $(COMPOSE_FILE) up --build
 

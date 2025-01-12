@@ -55,4 +55,4 @@ volumes:
     driver_opts:
       device: /home/yu-chen/data/mariadb
       type: none
-      o: binds
+      o: bind
