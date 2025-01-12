@@ -1,20 +1,55 @@
-all:
+GREEN		:= $(shell tput -Txterm setaf 2)
+RED		:= $(shell tput -Txterm setaf 1)
+YELLOW		:= $(shell tput -Txterm setaf 3)
+RESET		:= $(shell tput -Txterm sgr0)
+
+COMPOSE_FILE=./srcs/docker-compose.yml
+
+all: run
+
+run: 
+	@echo "$(GREEN)Building files for volumes ... $(RESET)"
+	@sudo mkdir -p /home/yu-chen/data/wordpress
+	@sudo mkdir -p /home/yu-chen/data/mariabd
+	@echo "$(GREEN)Building containers ... $(RESET)"
+	@docker compose -f $(COMPOSE_FILE) up --build
 
 up:
-    docker-compose -f srcs/docker-compose.yml up --build
+	@echo "$(GREEN)Building files for volumes ... $(RESET)"
+	@sudo mkdir -p /home/yu-chen/data/wordpress
+	@sudo mkdir -p /home/yu-chen/data/mariadb
+	@echo "$(GREEN)Building containers in background ... $(RESET)"
+	@docker compose -f $(COMPOSE_FILE) up -d --build
 
-down:
-    docker-compose -f srcs/docker-compose.yml down
+debug:
+	@echo "$(GREEN)Building files for volumes ... $(RESET)"
+	@sudo mkdir -p /home/yu-chen/data/wordpress
+	@sudo mkdir -p /home/yu-chen/data/mariadb
+	@echo "$(GREEN)Building containers with log information ... $(RESET)"
+	@docker compose -f $(COMPOSE_FILE) --verbose up
 
-stop:
-    docker-compose -f srcs/docker-compose.yml stop
+list:	
+	@echo "$(YELLOW)Listing all containers ... $(RESET)"
+	 docker ps -a
 
-start:
-    docker-compose -f srcs/docker-compose.yml start
+list_volumes:
+	@echo "$(YELLOW)Listing volumes ... $(RESET)"
+	docker volume ls
 
-status:
-    docker ps
+clean: 	
+	@echo "$(RED)Stopping containers ... $(RESET)"
+	@docker compose -f $(COMPOSE_FILE) down
+	@-docker stop `docker ps -qa`
+	@-docker rm `docker ps -qa`
+	@echo "$(RED)Deleting all images ... $(RESET)"
+	@-docker rmi -f `docker images -qa`
+	@echo "$(RED)Deleting all volumes ... $(RESET)"
+	@-docker volume rm `docker volume ls -q`
+	@echo "$(RED)Deleting all network ... $(RESET)"
+	@-docker network rm `docker network ls -q`
+	@echo "$(RED)Deleting all data ... $(RESET)"
+	@sudo rm -rf /home/yu-chen/data/wordpress
+	@sudo rm -rf /home/yu-chen/data/mariadb
+	@echo "$(RED)Deleting all $(RESET)"
 
-clean:
-    docker-compose -f srcs/docker-compose.yml down -v
-    docker system prune -af
+.PHONY: run up debug list list_volumes clean

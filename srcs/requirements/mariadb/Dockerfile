@@ -16,6 +16,6 @@ COPY ./tools/script.sh /
 
 RUN chmod +x /script.sh
 
-ENTRYPOINT [ "./script.sh" ]
+CMD [ "./script.sh" ]
 
-CMD ["mysqld_safe", "--bind-address=0.0.0.0"]
+#MD ["mysqld_safe", "--bind-address=0.0.0.0"]

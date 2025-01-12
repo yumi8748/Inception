@@ -19,7 +19,7 @@ services:
 
   wordpress:
     build: requirements/wordpress/.
-    container_name: wp-php
+    container_name: wordpress
     depends_on:
       - mariadb
     volumes:
@@ -43,4 +43,16 @@ services:
 
 volumes:
   wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      device: /home/yu-chen/data/wordpress
+      type: none
+      o: bind
   mariadb:
+    name: mariadb
+    driver: local
+    driver_opts:
+      device: /home/yu-chen/data/mariadb
+      type: none
+      o: binds
