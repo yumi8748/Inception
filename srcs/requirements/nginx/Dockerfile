@@ -3,10 +3,6 @@ FROM debian:bullseye
 # Set environment variable to avoid interactive prompts during package installs
 # ENV DEBIAN_FRONTEND=noninteractive
 
-RUN rm -f /var/lib/dpkg/lock-frontend && \
-    rm -f /var/lib/dpkg/lock && \
-    rm -rf /var/cache/apt/archives/lock && \
-    dpkg --configure -a
 
 # Install necessary packages
 RUN apt-get update \
