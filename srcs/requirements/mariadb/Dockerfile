@@ -18,4 +18,4 @@ RUN chmod +x /script.sh
 
 CMD [ "./script.sh" ]
 
-#MD ["mysqld_safe", "--bind-address=0.0.0.0"]
+#CMD ["mysqld_safe", "--bind-address=0.0.0.0"]
