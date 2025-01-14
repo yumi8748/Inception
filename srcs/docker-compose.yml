@@ -1,8 +1,24 @@
 version: "3.8"
 
 networks:
-    inception:
-        name: inception
+  inception:
+      driver: bridge
+
+volumes:
+  wordpress:
+    name: wordpress
+    driver: local
+    driver_opts:
+      device: /home/yu-chen/data/wordpress
+      type: none
+      o: bind
+  mariadb:
+    #name: mariadb
+    driver: local
+    driver_opts:
+      device: /home/yu-chen/data/mariadb
+      type: none
+      o: bind
 
 services:
   nginx:
@@ -38,7 +54,7 @@ services:
   mariadb:
     build: requirements/mariadb/.
     container_name: mariadb
-    #image: mariadb
+    image: mariadb
     volumes:
       - mariadb:/var/lib/mysql
     networks:
@@ -46,19 +62,3 @@ services:
     env_file:
       - .env
     restart: always
-
-volumes:
-  wordpress:
-    name: wordpress
-    driver: local
-    driver_opts:
-      device: /home/yu-chen/data/wordpress
-      type: none
-      o: bind
-  mariadb:
-    name: mariadb
-    driver: local
-    driver_opts:
-      device: /home/yu-chen/data/mariadb
-      type: none
-      o: bind

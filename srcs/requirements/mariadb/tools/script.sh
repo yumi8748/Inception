@@ -4,15 +4,15 @@
 
 sleep 5
 
-mysql_secure_installation << EOF
-$DB_ROOTPASS
-Y
-n
-Y
-n
-Y
-Y
-EOF
+#mysql_secure_installation << EOF
+#$DB_ROOTPASS
+#Y
+#n
+#Y
+#n
+#Y
+#Y
+#EOF
 
 
 # echo "CREATING DATABASE"
@@ -26,7 +26,6 @@ mysql -e "FLUSH PRIVILEGES;"
 # echo "ALTERING USER"
 # mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY '${DB_USERPASS}';"
 
-# echo "CMDS DONE"
 /etc/init.d/mariadb stop
 
-exec "$@"
+exec mysqld_safe --bind-address=0.0.0.0

@@ -26,6 +26,8 @@ COPY conf/nginx.conf /etc/nginx/.
 COPY entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
+EXPOSE 443
+
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Ensure nginx is run in the foreground
