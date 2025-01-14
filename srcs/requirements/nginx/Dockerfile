@@ -22,5 +22,11 @@ RUN openssl req -x509 -nodes \
 COPY conf/default /etc/nginx/sites-available/.
 COPY conf/nginx.conf /etc/nginx/.
 
+# Add the entrypoint script
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+
 # Ensure nginx is run in the foreground
 CMD [ "nginx", "-g", "daemon off;" ]
