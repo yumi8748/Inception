@@ -21,6 +21,15 @@ up:
 	@echo "$(GREEN)Building containers in background ... $(RESET)"
 	@docker compose -f $(COMPOSE_FILE) up -d --build
 
+enter_mariadb:
+	docker exec -it mariadb bash
+
+enter_wordpress:
+	docker exec -it wordpress sh
+
+enter_nginx:
+	docker exec -it nginx bash
+
 debug:
 	@echo "$(GREEN)Building files for volumes ... $(RESET)"
 	@sudo mkdir -p /home/yu-chen/data/wordpress
@@ -28,13 +37,22 @@ debug:
 	@echo "$(GREEN)Building containers with log information ... $(RESET)"
 	@docker compose -f $(COMPOSE_FILE) --verbose up
 
-list:	
+containers:	
 	@echo "$(YELLOW)Listing all containers ... $(RESET)"
 	 docker ps -a
 
-list_volumes:
+volumes:
 	@echo "$(YELLOW)Listing volumes ... $(RESET)"
 	docker volume ls
+
+network:	
+	@echo "$(YELLOW)Listing all networks ... $(RESET)"
+	@docker network ls
+	@docker network inspect inception
+
+images:
+	@echo "$(YELLOW)Listing all images ... $(RESET)"
+	@docker images
 
 clean: 	
 	@echo "$(RED)Stopping containers ... $(RESET)"
