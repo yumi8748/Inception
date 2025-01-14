@@ -39,11 +39,11 @@ debug:
 
 containers:	
 	@echo "$(YELLOW)Listing all containers ... $(RESET)"
-	 docker ps -a
+	@docker ps -a
 
 volumes:
 	@echo "$(YELLOW)Listing volumes ... $(RESET)"
-	docker volume ls
+	@docker volume ls
 
 network:	
 	@echo "$(YELLOW)Listing all networks ... $(RESET)"
