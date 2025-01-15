@@ -9,6 +9,11 @@ RUN apt-get update \
     && apt-get install -y nginx openssl \
     && apt-get clean
 
+# create working directory and set access and ownership to user
+RUN	mkdir -p /var/www/html && \
+	chmod -R 777 /var/www/html
+#	chown -R www-data:www-data /var/www/html
+
 # Create SSL directory and set permissions
 RUN mkdir -p /etc/nginx/ssl && \
     chmod 777 /etc/nginx/ssl
@@ -23,12 +28,14 @@ COPY conf/default /etc/nginx/sites-available/.
 COPY conf/nginx.conf /etc/nginx/.
 
 # Add the entrypoint script
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+WORKDIR	/var/www/html/
 
 EXPOSE 443
 
-ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 
 # Ensure nginx is run in the foreground
 CMD [ "nginx", "-g", "daemon off;" ]

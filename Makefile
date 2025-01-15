@@ -48,7 +48,7 @@ volumes:
 network:	
 	@echo "$(YELLOW)Listing all networks ... $(RESET)"
 	@docker network ls
-	@docker network inspect inception
+	@docker network inspect srcs_inception
 
 images:
 	@echo "$(YELLOW)Listing all images ... $(RESET)"

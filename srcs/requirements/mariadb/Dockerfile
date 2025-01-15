@@ -12,10 +12,10 @@ RUN chown -R mysql:mysql /var/lib/mysql && \
 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/.
 
-COPY ./tools/script.sh /
+COPY ./tools/script.sh /usr/local/bin/
 
-RUN chmod +x /script.sh
+RUN chmod +x /usr/local/bin/script.sh
 
-ENTRYPOINT [ "./script.sh" ]
+ENTRYPOINT [ "/usr/local/bin/script.sh" ]
 
 CMD ["mysqld_safe", "--bind-address=0.0.0.0"]
